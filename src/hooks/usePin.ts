@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { comparePin, hashPin } from "../utils/pin";
 import { usePinStore } from "../store/pin";
 
-const usePin = (storedHashedPin: string) => {
+const usePin = () => {
   const { setHashedPin, hashedPin } = usePinStore();
   const [pin, setPin] = useState<string>("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -11,7 +11,7 @@ const usePin = (storedHashedPin: string) => {
 
   const checkPin = async (enteredPin: string) => {
     try {
-      const isMatch = await comparePin(enteredPin, storedHashedPin);
+      const isMatch = await comparePin(enteredPin, hashedPin as string);
       setIsCorrect(isMatch);
       setPinError(isMatch ? null : "Incorrect PIN");
       setVisible(false);

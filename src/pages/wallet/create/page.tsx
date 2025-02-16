@@ -4,11 +4,11 @@ import { WalletStore } from "../../../interfaces/wallet";
 import PinGenerator from "../../../components/Pin";
 import usePin from "../../../hooks/usePin";
 import { useEffect } from "react";
-import MnemonicDisplay from "../../../components/Mnemonic";
+import MnemonicDisplay from "../../../components/MnemonicDisplay";
 
 const CreateWallet = () => {
   const { setWallet } = useWalletStore((state: WalletStore) => state);
-  const { pinSet, pin } = usePin("");
+  const { pinSet, pin } = usePin();
 
   useEffect(() => {
     if (pinSet) {

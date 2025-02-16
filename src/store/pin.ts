@@ -8,7 +8,7 @@ export const usePinStore = create<PinStore>()(
   persist(
     devtools((set) => ({
       hashedPin: null,
-      setHashedPin: (hashedPin) => set({ hashedPin }),
+      setHashedPin: (hashedPin: string) => set({ hashedPin }),
       resetPin: () => set({ hashedPin: null }),
     })),
     {

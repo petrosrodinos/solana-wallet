@@ -7,7 +7,7 @@ interface PinInputProps {
 }
 
 const PinInput: FC<PinInputProps> = ({ confirm = false }) => {
-  const { checkPin, encryptPin, handlePinChange, pinError } = usePin("");
+  const { checkPin, encryptPin, handlePinChange, pinError } = usePin();
   const [pin, setPin] = useState<string>("");
   const [error, setError] = useState<string>("");
 
