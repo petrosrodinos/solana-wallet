@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import { useWallet } from "../../../hooks/useWallet";
 import Spinner from "../../../components/ui/Spinner";
 import Alert from "../../../components/ui/Alert";
-import Modal from "../../../components/ui/Modal"; // Assuming a Modal component exists
+import Modal from "../../../components/ui/Modal";
 import SendTokens from "./SendTokens";
 
 const ActionButtons: FC = () => {
@@ -12,10 +12,6 @@ const ActionButtons: FC = () => {
 
   const handleReceive = () => {
     getAirdrop();
-  };
-
-  const handleSend = (amount: number, recipient: string) => {
-    setIsModalOpen(false);
   };
 
   const toggleModal = () => {
@@ -56,7 +52,7 @@ const ActionButtons: FC = () => {
       {error && <Alert text={error} variant="error" />}
 
       <Modal title="Send Tokens" open={isModalOpen} onClose={toggleModal}>
-        <SendTokens onSend={handleSend} />
+        <SendTokens onSend={toggleModal} />
       </Modal>
     </div>
   );

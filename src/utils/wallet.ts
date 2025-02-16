@@ -59,9 +59,9 @@ export const decryptMnemonic = (encryptedMnemonic: string, pin: string) => {
     const bytes = AES.decrypt(encryptedMnemonic, pin);
     const mnemonic = bytes.toString();
 
-    if (!bip39.validateMnemonic(mnemonic)) {
-      throw new Error("Invalid mnemonic.");
-    }
+    // if (!bip39.validateMnemonic(mnemonic)) {
+    //   throw new Error("Invalid mnemonic.");
+    // }
 
     return mnemonic;
   } catch (error) {

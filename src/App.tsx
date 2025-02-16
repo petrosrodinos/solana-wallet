@@ -4,7 +4,7 @@ import ImportWallet from "./pages/wallet/import/page";
 import Home from "./pages/home";
 import Wallet from "./pages/wallet/wallet";
 import { useWalletStore } from "./store/wallet";
-
+import { ToastContainer } from "react-toastify";
 function App() {
   const { encryptedMnemonic } = useWalletStore((state) => state);
   return (
@@ -19,6 +19,7 @@ function App() {
               <Route path="/wallet" element={<Wallet />} />
             </Routes>
           </BrowserRouter>
+          <ToastContainer />
         </div>
       </div>
     </>

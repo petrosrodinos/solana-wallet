@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { comparePin, hashPin } from "../utils/pin";
 import { usePinStore } from "../store/pin";
 
-const usePin = () => {
+const usePin = (onCorrectPin?: (pin: string) => void) => {
   const { setHashedPin, hashedPin } = usePinStore();
   const [pin, setPin] = useState<string>("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -14,8 +14,8 @@ const usePin = () => {
       const isMatch = await comparePin(enteredPin, hashedPin as string);
       setIsCorrect(isMatch);
       setPinError(isMatch ? null : "Incorrect PIN");
-      setVisible(false);
-      return isMatch;
+      setVisible(!isMatch);
+      if (isMatch && onCorrectPin) onCorrectPin(pin);
     } catch (err) {
       setPinError("An error occurred while verifying the PIN.");
     }
@@ -35,7 +35,7 @@ const usePin = () => {
     setPin(newPin);
   };
 
-  const toggleVisibility = () => {
+  const togglePinPrompt = () => {
     setVisible((prev) => !prev);
   };
 
@@ -50,7 +50,7 @@ const usePin = () => {
     handlePinChange,
     checkPin,
     encryptPin,
-    toggleVisibility,
+    togglePinPrompt,
   };
 };
 

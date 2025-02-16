@@ -4,10 +4,11 @@ import usePin from "../../hooks/usePin";
 
 interface PinInputProps {
   confirm?: boolean;
+  onConfirm?: (pin: string) => void;
 }
 
-const PinInput: FC<PinInputProps> = ({ confirm = false }) => {
-  const { checkPin, encryptPin, handlePinChange, pinError } = usePin();
+const PinInput: FC<PinInputProps> = ({ confirm = false, onConfirm }) => {
+  const { checkPin, encryptPin, handlePinChange, pinError } = usePin(onConfirm);
   const [pin, setPin] = useState<string>("");
   const [error, setError] = useState<string>("");
 
