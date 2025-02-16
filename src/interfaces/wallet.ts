@@ -4,6 +4,7 @@ export interface WalletStore {
   encryptedMnemonic: string;
   setWallet: (state: NewWallet) => void;
   resetWallet: () => void;
+  removeMnemonic: () => void;
 }
 
 export interface NewWallet {

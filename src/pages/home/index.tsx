@@ -2,8 +2,8 @@ import { NavLink } from "react-router";
 
 const Home = () => {
   return (
-    <div className="bg-gray-100 min-h-screen p-4 flex items-center justify-center min-h-scree">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full text-center">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full text-center flex flex-col gap-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Welcome to Your Crypto Wallet</h1>
 
         <p className="text-gray-600 mb-6">

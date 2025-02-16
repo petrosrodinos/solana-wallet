@@ -1,77 +1,73 @@
-import { useState } from "react";
-import { usePinStore } from "../../store/pin";
+import { useState, useEffect, FC } from "react";
 import { Delete } from "lucide-react";
+import usePin from "../../hooks/usePin";
 
-const PinGenerator = () => {
-  const [pin, setPin] = useState("");
-  const [error, setError] = useState("");
-  const { setHashedPin } = usePinStore();
+interface PinInputProps {
+  confirm?: boolean;
+}
 
-  // Hash PIN using SHA-256
-  const hashPin = async (pin: string) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(pin);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    return Array.from(new Uint8Array(hashBuffer))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-  };
+const PinInput: FC<PinInputProps> = ({ confirm = false }) => {
+  const { checkPin, encryptPin, handlePinChange, pinError } = usePin("");
+  const [pin, setPin] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  // Handle PIN entry via numpad
+  useEffect(() => {
+    handlePinChange(pin);
+  }, [pin]);
+
   const handleNumberClick = (num: string) => {
     if (pin.length < 4) {
       setPin(pin + num);
+      setError("");
     }
   };
 
-  // Handle backspace
   const handleBackspace = () => {
     setPin(pin.slice(0, -1));
   };
 
-  // Submit PIN
-  const handleSubmit = async () => {
-    if (pin.length !== 4) {
-      setError("PIN must be exactly 4 digits.");
-      return;
+  const handleSubmit = () => {
+    if (pin.length === 4) {
+      if (confirm) {
+        checkPin(pin);
+      } else {
+        encryptPin(pin);
+      }
+      setError("");
+      setPin("");
+    } else {
+      setError("PIN must be 4 digits");
     }
-
-    const hashed = await hashPin(pin);
-    setHashedPin(hashed);
-    setPin("");
-    alert("PIN set successfully!");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-xs">
-        <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">Set Your PIN</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 px-4">
+      <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-xl w-full max-w-xs border border-white/20">
+        <h2 className="text-xl font-semibold text-center text-white mb-6">
+          {confirm ? "Confirm Your PIN" : "Set Your PIN"}
+        </h2>
 
-        {/* Hidden input field */}
-        <input type="password" className="hidden" value={pin} readOnly />
-
-        {/* PIN Display */}
-        <div className="flex justify-center space-x-2 mb-4">
+        <div className="flex justify-center space-x-3 mb-6">
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className={`w-5 h-5 rounded-full ${
-                i < pin.length ? "bg-blue-500" : "bg-gray-300"
-              } transition-all`}
+              className={`w-6 h-6 rounded-full transition-all ${
+                i < pin.length ? "bg-blue-500" : "bg-gray-500/50 border border-white/20"
+              }`}
             ></div>
           ))}
         </div>
 
-        {/* Error Message */}
-        {error && <p className="text-red-500 text-sm text-center mb-2">{error}</p>}
+        {(error || pinError) && (
+          <p className="text-red-400 text-sm text-center mb-3">{error || pinError}</p>
+        )}
 
-        {/* Numpad */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-4">
           {[...Array(9)].map((_, i) => (
             <button
               key={i + 1}
               onClick={() => handleNumberClick((i + 1).toString())}
-              className="w-16 h-16 text-2xl font-bold bg-gray-200 rounded-lg shadow hover:bg-gray-300 transition"
+              className="w-16 h-16 text-2xl font-bold text-white bg-gray-700/50 rounded-xl shadow-md backdrop-blur-lg hover:bg-gray-600 transition-all"
             >
               {i + 1}
             </button>
@@ -79,22 +75,21 @@ const PinGenerator = () => {
           <div></div>
           <button
             onClick={() => handleNumberClick("0")}
-            className="w-16 h-16 text-2xl font-bold bg-gray-200 rounded-lg shadow hover:bg-gray-300 transition"
+            className="w-16 h-16 text-2xl font-bold text-white bg-gray-700/50 rounded-xl shadow-md backdrop-blur-lg hover:bg-gray-600 transition-all"
           >
             0
           </button>
           <button
             onClick={handleBackspace}
-            className="w-16 h-16 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition flex items-center justify-center"
+            className="w-16 h-16 bg-red-500 text-white rounded-xl shadow-md hover:bg-red-600 transition flex items-center justify-center"
           >
-            <Delete size={24} />
+            <Delete size={28} />
           </button>
         </div>
 
-        {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          className="w-full mt-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full mt-6 bg-blue-600 text-white py-3 rounded-xl shadow-md hover:bg-blue-700 transition"
         >
           Confirm PIN
         </button>
@@ -103,4 +98,4 @@ const PinGenerator = () => {
   );
 };
 
-export default PinGenerator;
+export default PinInput;

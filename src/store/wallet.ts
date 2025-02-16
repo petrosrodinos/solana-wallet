@@ -10,13 +10,14 @@ const initialValues: NewWallet = {
 
 const STORE_KEY = "wallet-storage";
 
-export const useWallet = create<WalletStore>()(
+export const useWalletStore = create<WalletStore>()(
   devtools(
     persist(
       (set) => ({
         ...initialValues,
         setWallet: (wallet: NewWallet) => set((state) => ({ ...state, ...wallet })),
         resetWallet: () => set(initialValues),
+        removeMnemonic: () => set((state) => ({ ...state, mnemonic: "" })),
       }),
       {
         name: STORE_KEY,
@@ -25,4 +26,4 @@ export const useWallet = create<WalletStore>()(
   )
 );
 
-export const getWalletState = () => useWallet.getState();
+export const getWalletState = () => useWalletStore.getState();
