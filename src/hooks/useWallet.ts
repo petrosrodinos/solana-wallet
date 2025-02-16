@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useWalletStore } from "../store/wallet";
-import { getBalance } from "../services/wallet";
+import { getBalance, requestAirdrop } from "../services/wallet";
 
 export const useWallet = () => {
   const { publicKey } = useWalletStore((state) => state);
@@ -27,5 +27,20 @@ export const useWallet = () => {
     }
   };
 
-  return { balance, loading, error };
+  const getAirdrop = async () => {
+    if (!publicKey) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await requestAirdrop(publicKey);
+      fetchBalance();
+    } catch (err) {
+      console.error("Error requesting airdrop:", err);
+      setError("Failed to request airdrop.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { fetchBalance, getAirdrop, balance, loading, error };
 };

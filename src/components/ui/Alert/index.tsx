@@ -21,7 +21,7 @@ const Alert: FC<AlertProps> = ({ text, description, variant }) => {
   };
 
   return (
-    <div className={`flex items-start p-4 border-l-4 rounded-md ${variantStyles[variant]}`}>
+    <div className={`flex items-start p-3 border-l-4 rounded-md m-1 ${variantStyles[variant]}`}>
       <div className="mr-3">{icons[variant]}</div>
       <div>
         <p className="font-semibold">{text}</p>

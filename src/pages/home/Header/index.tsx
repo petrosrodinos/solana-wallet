@@ -16,7 +16,6 @@ const Header: FC = () => {
       <p className="text-sm break-all bg-gray-700 p-2 rounded-lg mt-1">{publicKey}</p>
       <p className="text-gray-300 mt-4">Balance:</p>
       <p className="text-3xl font-bold text-green-400">{balance ?? "0"} SOL</p>
-      {/* {error && <Alert text={error} variant="error" />} */}
     </div>
   );
 };
