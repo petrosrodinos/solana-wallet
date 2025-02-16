@@ -1,5 +1,11 @@
+import BottomNavigation from "../../components/BottomNavigation";
+
 const Home = () => {
-  return <div className="min-h-screen flex items-center justify-center">wallet home</div>;
+  return (
+    <div>
+      <BottomNavigation />
+    </div>
+  );
 };
 
 export default Home;
