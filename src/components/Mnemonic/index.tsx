@@ -16,7 +16,7 @@ const MnemonicDisplay = () => {
 
   const handleRedirectToWallet = () => {
     removeMnemonic();
-    navigate("/wallet");
+    navigate("/");
   };
 
   return (
