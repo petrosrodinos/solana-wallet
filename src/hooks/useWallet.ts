@@ -1,17 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useWalletStore } from "../store/wallet";
-import { getBalance, requestAirdrop, sendTransaction } from "../services/wallet";
+import { getBalance, requestAirdrop, sendTransaction, getTransactions } from "../services/wallet";
 import { decryptMnemonic } from "../utils/wallet";
+import { parseTransactions } from "../utils/transaction";
 
 export const useWallet = () => {
   const { publicKey, encryptedMnemonic } = useWalletStore((state) => state);
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchBalance();
-  }, [publicKey]);
 
   const fetchBalance = async () => {
     if (!publicKey) return;
@@ -60,5 +57,21 @@ export const useWallet = () => {
     }
   };
 
-  return { fetchBalance, getAirdrop, sendTokens, balance, loading, error };
+  const getWalletTransactions = async () => {
+    if (!publicKey) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const transactions = await getTransactions(publicKey);
+      const formattedTransactions = parseTransactions(transactions, publicKey);
+      return formattedTransactions;
+    } catch (err) {
+      console.error("Error fetching transactions:", err);
+      setError("Failed to fetch transactions.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { fetchBalance, getAirdrop, sendTokens, getWalletTransactions, balance, loading, error };
 };

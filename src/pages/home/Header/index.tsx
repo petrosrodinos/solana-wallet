@@ -1,12 +1,16 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useWalletStore } from "../../../store/wallet";
 import { useWallet } from "../../../hooks/useWallet";
 import Spinner from "../../../components/ui/Spinner";
 
 const Header: FC = () => {
-  const { balance, loading } = useWallet();
+  const { fetchBalance, balance, loading } = useWallet();
 
   const { publicKey } = useWalletStore((state) => state);
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
 
   return (
     <div className="bg-white/10 p-6 rounded-xl shadow-lg backdrop-blur-md w-full max-w-lg text-center">

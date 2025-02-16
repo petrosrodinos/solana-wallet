@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import PinInput from "../../../../components/Pin";
 import { useWallet } from "../../../../hooks/useWallet";
 import usePin from "../../../../hooks/usePin";
