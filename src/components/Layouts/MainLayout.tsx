@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import AppBar from "../AppBar";
 import BottomNavigation from "../BottomNavigation";
 
-const Layout = () => {
+const MainLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <AppBar />
@@ -14,4 +14,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default MainLayout;
