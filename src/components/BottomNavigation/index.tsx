@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router";
-import { Home, Wallet, Settings } from "lucide-react";
+import { Wallet, Settings, Coins, Component } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const BottomNavigation = () => {
@@ -17,9 +17,9 @@ const BottomNavigation = () => {
   };
 
   const tabs = [
-    { label: "Home", path: "/", icon: Home },
-    { label: "Tokens", path: "/tokens", icon: Wallet },
-    { label: "NFTs", path: "/nfts", icon: Wallet },
+    { label: "Home", path: "/", icon: Wallet },
+    { label: "Tokens", path: "/tokens", icon: Coins },
+    { label: "NFTs", path: "/nfts", icon: Component },
     { label: "Settings", path: "/settings", icon: Settings },
   ];
 

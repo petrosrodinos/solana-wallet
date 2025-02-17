@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 
 const Wallet = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full text-center flex flex-col gap-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Welcome to Your Crypto Wallet</h1>
 
