@@ -30,6 +30,7 @@ export const requestAirdrop = async (publicKey: string, amount: number = 1) => {
     return airdropSignature;
   } catch (error) {
     console.error("Error during airdrop:", error);
+    throw new Error("Error during airdrop");
   }
 };
 
@@ -62,7 +63,6 @@ export const sendTransaction = async (mnemonic: string, recipient: string, amoun
 
     const confirmation = await connection.confirmTransaction(signature, "confirmed");
     if (confirmation.value.err) {
-      console.error("Transaction failed:", confirmation.value.err);
       throw new Error("Transaction failed");
     }
 
@@ -89,8 +89,6 @@ export const getTransactions = async (publicKey: string, limit: number = 10) => 
         return transactionDetails;
       })
     );
-
-    console.log("transactions", transactions);
 
     return transactions.filter((tx) => tx !== null);
   } catch (error) {

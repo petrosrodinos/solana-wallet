@@ -2,12 +2,11 @@ import { ArrowDown, ArrowUp, CreditCard, RefreshCcw } from "lucide-react";
 import { FC, useState } from "react";
 import { useWallet } from "../../../hooks/useWallet";
 import Spinner from "../../../components/ui/Spinner";
-import Alert from "../../../components/ui/Alert";
 import Modal from "../../../components/ui/Modal";
 import SendTokens from "./SendTokens";
 
 const ActionButtons: FC = () => {
-  const { getAirdrop, loading, error } = useWallet();
+  const { getAirdrop, loading } = useWallet();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleReceive = () => {
@@ -49,7 +48,6 @@ const ActionButtons: FC = () => {
         </button>
       </div>
       <Spinner className="mt-2" visible={loading} />
-      {error && <Alert text={error} variant="error" />}
 
       <Modal title="Send Tokens" open={isModalOpen} onClose={toggleModal}>
         <SendTokens onSend={toggleModal} />

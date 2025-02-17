@@ -3,6 +3,7 @@ import { useWalletStore } from "../store/wallet";
 import { getBalance, requestAirdrop, sendTransaction, getTransactions } from "../services/wallet";
 import { decryptMnemonic } from "../utils/wallet";
 import { parseTransactions } from "../utils/transaction";
+import { toast } from "react-toastify";
 
 export const useWallet = () => {
   const { publicKey, encryptedMnemonic } = useWalletStore((state) => state);
@@ -32,9 +33,11 @@ export const useWallet = () => {
     try {
       await requestAirdrop(publicKey);
       fetchBalance();
+      toast.success("Airdrop successful");
     } catch (err) {
       console.error("Error requesting airdrop:", err);
       setError("Failed to request airdrop.");
+      toast.error("Airdrop failed");
     } finally {
       setLoading(false);
     }
@@ -48,10 +51,12 @@ export const useWallet = () => {
 
       await sendTransaction(mnemonic, recipient, amount);
       fetchBalance();
+      toast.success("Transaction successful");
       return true;
     } catch (err) {
       console.error("Error sending tokens:", err);
       setError("Failed to send tokens.");
+      toast.error("Transaction failed");
     } finally {
       setLoading(false);
     }

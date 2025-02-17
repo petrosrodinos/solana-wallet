@@ -19,7 +19,7 @@ function App() {
               <Route path="/wallet" element={<Wallet />} />
             </Routes>
           </BrowserRouter>
-          <ToastContainer />
+          <ToastContainer position="top-center" />
         </div>
       </div>
     </>

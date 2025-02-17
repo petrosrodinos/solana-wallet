@@ -15,7 +15,6 @@ const Transactions: FC = () => {
   const getTransactions = async () => {
     const transactions: any = await getWalletTransactions();
     setTransactions(transactions);
-    console.log("transactions2", transactions);
   };
 
   return (
