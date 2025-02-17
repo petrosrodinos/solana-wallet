@@ -76,13 +76,3 @@ export const encryptMnemonic = (mnemonic: string, pin: string) => {
 
   return encryptedMnemonic;
 };
-
-function addZerosToString(input: string): string {
-  const lengthDifference = 16 - input.length;
-
-  if (lengthDifference > 0) {
-    return input + "0".repeat(lengthDifference);
-  }
-
-  return input;
-}
