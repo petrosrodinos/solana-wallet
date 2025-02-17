@@ -52,7 +52,12 @@ const Transactions: FC = () => {
           )}
         </div>
       )}
-      <Alert text={error} variant="error" />
+      <Alert visible={!!error} text={error} variant="error" />
+      <Alert
+        visible={transactions.length == 0}
+        text="There are no transactions left"
+        variant="warning"
+      />
     </div>
   );
 };
