@@ -5,11 +5,13 @@ import PinGenerator from "../../../components/Pin";
 import usePin from "../../../hooks/usePin";
 import ImportMnemonic from "../../../components/ImportMnemonic";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 const ImportWallet = () => {
   const { setWallet } = useWalletStore((state: WalletStore) => state);
-  const { pinSet, pin } = usePin();
+  const { pinSet } = usePin();
   const navigate = useNavigate();
+  const [pin, setPin] = useState<string>("");
 
   const handleImportMnemonic = (mnemonic: string) => {
     const { encryptedMnemonic, publicKey } = importWallet(mnemonic, pin);
@@ -17,9 +19,13 @@ const ImportWallet = () => {
     navigate("/");
   };
 
+  const handleSetPin = (pin: string) => {
+    setPin(pin);
+  };
+
   return (
     <div>
-      {!pinSet && <PinGenerator />}
+      {!pinSet && <PinGenerator onSetPin={handleSetPin} />}
       {pinSet && <ImportMnemonic onImport={handleImportMnemonic} />}
     </div>
   );

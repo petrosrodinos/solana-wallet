@@ -5,9 +5,10 @@ import usePin from "../../hooks/usePin";
 interface PinInputProps {
   confirm?: boolean;
   onConfirm?: (pin: string) => void;
+  onSetPin?: (pin: string) => void;
 }
 
-const PinInput: FC<PinInputProps> = ({ confirm = false, onConfirm }) => {
+const PinInput: FC<PinInputProps> = ({ confirm = false, onConfirm, onSetPin }) => {
   const { checkPin, encryptPin, handlePinChange, pinError } = usePin(onConfirm);
   const [pin, setPin] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -33,6 +34,7 @@ const PinInput: FC<PinInputProps> = ({ confirm = false, onConfirm }) => {
         checkPin(pin);
       } else {
         encryptPin(pin);
+        onSetPin?.(pin);
       }
       setError("");
       setPin("");

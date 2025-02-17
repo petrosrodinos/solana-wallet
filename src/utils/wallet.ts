@@ -2,6 +2,7 @@ import { Keypair } from "@solana/web3.js";
 import * as bip39 from "bip39";
 import AES from "crypto-js/aes";
 import { Buffer } from "buffer";
+import { enc, PBKDF2 } from "crypto-js";
 
 export const createWallet = (pin: string) => {
   window.Buffer = Buffer;
@@ -14,7 +15,7 @@ export const createWallet = (pin: string) => {
     const keypair = Keypair.fromSeed(seed);
     const publicKey = keypair.publicKey.toString();
 
-    const encryptedMnemonic = AES.encrypt(mnemonic, pin).toString();
+    const encryptedMnemonic = encryptMnemonic(mnemonic, pin);
 
     return {
       publicKey,
@@ -42,7 +43,7 @@ export const importWallet = (mnemonic: string, pin: string) => {
     const keypair = Keypair.fromSeed(seed);
     const publicKey = keypair.publicKey.toString();
 
-    const encryptedMnemonic = AES.encrypt(trimmedMnemonic, pin).toString();
+    const encryptedMnemonic = encryptMnemonic(mnemonic, pin);
 
     return {
       publicKey,
@@ -56,12 +57,10 @@ export const importWallet = (mnemonic: string, pin: string) => {
 
 export const decryptMnemonic = (encryptedMnemonic: string, pin: string) => {
   try {
-    const bytes = AES.decrypt(encryptedMnemonic, pin);
-    const mnemonic = bytes.toString();
+    const key = PBKDF2(pin, "salt", { keySize: 256 / 32, iterations: 1000 }).toString();
 
-    // if (!bip39.validateMnemonic(mnemonic)) {
-    //   throw new Error("Invalid mnemonic.");
-    // }
+    const bytes = AES.decrypt(encryptedMnemonic, key);
+    const mnemonic = bytes.toString(enc.Utf8);
 
     return mnemonic;
   } catch (error) {
@@ -69,3 +68,21 @@ export const decryptMnemonic = (encryptedMnemonic: string, pin: string) => {
     throw error;
   }
 };
+
+export const encryptMnemonic = (mnemonic: string, pin: string) => {
+  const key = PBKDF2(pin, "salt", { keySize: 256 / 32, iterations: 1000 }).toString();
+
+  let encryptedMnemonic = AES.encrypt(mnemonic, key).toString();
+
+  return encryptedMnemonic;
+};
+
+function addZerosToString(input: string): string {
+  const lengthDifference = 16 - input.length;
+
+  if (lengthDifference > 0) {
+    return input + "0".repeat(lengthDifference);
+  }
+
+  return input;
+}

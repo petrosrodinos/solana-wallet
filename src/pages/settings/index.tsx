@@ -14,9 +14,6 @@ const Settings = () => {
     togglePinPrompt();
     const decryptedMnemonic = decryptMnemonic(encryptedMnemonic, pin);
     setMnemonic(decryptedMnemonic);
-    console.log("Decrypted Mnemonic: ", decryptedMnemonic);
-    console.log("encryptedMnemonic: ", encryptedMnemonic);
-    console.log("pin: ", pin);
   }
 
   return (
