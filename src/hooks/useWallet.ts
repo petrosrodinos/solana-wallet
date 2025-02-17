@@ -32,7 +32,6 @@ export const useWallet = () => {
     setError(null);
     try {
       await requestAirdrop(publicKey);
-      fetchBalance();
       toast.success("Airdrop successful");
     } catch (err) {
       console.error("Error requesting airdrop:", err);
@@ -50,7 +49,6 @@ export const useWallet = () => {
       const mnemonic = decryptMnemonic(encryptedMnemonic, pin);
 
       await sendTransaction(mnemonic, recipient, amount);
-      fetchBalance();
       toast.success("Transaction successful");
       return true;
     } catch (err) {
