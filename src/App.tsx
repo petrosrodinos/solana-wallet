@@ -5,6 +5,8 @@ import Home from "./pages/home";
 import Wallet from "./pages/wallet/wallet";
 import { useWalletStore } from "./store/wallet";
 import { ToastContainer } from "react-toastify";
+import Tokens from "./pages/tokens";
+import Nfts from "./pages/nfts";
 
 function App() {
   const { encryptedMnemonic } = useWalletStore((state) => state);
@@ -15,9 +17,11 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={!encryptedMnemonic ? <Navigate to="/wallet" /> : <Home />} />
+              <Route path="/wallet" element={<Wallet />} />
               <Route path="/wallet/create" element={<CreateWallet />} />
               <Route path="/wallet/import" element={<ImportWallet />} />
-              <Route path="/wallet" element={<Wallet />} />
+              <Route path="/tokens" element={<Tokens />} />
+              <Route path="/nfts" element={<Nfts />} />
             </Routes>
           </BrowserRouter>
           <ToastContainer position="top-center" />

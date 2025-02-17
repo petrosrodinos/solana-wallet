@@ -1,4 +1,5 @@
 import AppBar from "../../components/AppBar";
+import BottomNavigation from "../../components/BottomNavigation";
 import ActionButtons from "./ActionButtons";
 import Header from "./Header";
 import Transactions from "./Transactions";
@@ -13,6 +14,7 @@ const Home = () => {
 
         <Transactions />
       </div>
+      <BottomNavigation />
     </div>
   );
 };

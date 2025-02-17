@@ -54,7 +54,7 @@ const Transactions: FC = () => {
       )}
       <Alert visible={!!error} text={error} variant="error" />
       <Alert
-        visible={transactions.length == 0}
+        visible={transactions.length == 0 && !loading}
         text="There are no transactions left"
         variant="warning"
       />
