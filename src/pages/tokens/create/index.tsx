@@ -5,16 +5,16 @@ import { TEST_MNEMONIC } from "../../../constants";
 import ImageUploader from "../../../components/ui/ImageUploader";
 import { createMetadataJson } from "../../../utils/token";
 import { uploadImageToPinata, uploadMetadataToPinata } from "../../../services/ipfs";
+import Spinner from "../../../components/ui/Spinner";
 
 const CreateToken = () => {
-  const { createToken } = useToken();
+  const { createToken, loading } = useToken();
   const [formData, setFormData] = useState({
     quantity: "",
     name: "",
     symbol: "",
   });
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -55,8 +55,6 @@ const CreateToken = () => {
     } catch (error: any) {
       console.error("Error creating token:", error);
       toast.error(`Failed to create token: ${error.message}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -114,7 +112,7 @@ const CreateToken = () => {
           required={true}
           size="md"
         />
-
+        <Spinner visible={loading} />
         <button
           onClick={handleCreateAndMintToken}
           disabled={loading}
