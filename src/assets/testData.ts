@@ -26,3 +26,26 @@ export const TestTransactions: Transaction[] = [
     from: "Aq1x...9J0K",
   },
 ];
+
+export const tokens = [
+  {
+    name: "Solana",
+    symbol: "SOL",
+    image: "https://cryptologos.cc/logos/solana-sol-logo.png",
+  },
+  {
+    name: "USDC",
+    symbol: "USDC",
+    image: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
+  },
+  {
+    name: "Raydium",
+    symbol: "RAY",
+    image: "https://cryptologos.cc/logos/raydium-ray-logo.png",
+  },
+  {
+    name: "Serum",
+    symbol: "SRM",
+    image: "https://cryptologos.cc/logos/serum-srm-logo.png",
+  },
+];

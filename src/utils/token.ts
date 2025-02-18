@@ -6,6 +6,7 @@ export const createMetadataJson = (data: TokenMetadata) => {
     symbol: data.symbol,
     description: `${data.name} token created with SPL Token Extensions`,
     image: data.image.gatewayUrl,
+    logo: data.image.gatewayUrl,
     external_url: "",
     properties: {
       tokenType: "utility",

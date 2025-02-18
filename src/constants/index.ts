@@ -10,3 +10,7 @@ export const TEST_METADATA =
 export const PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY;
 
 export const PINATA_API_SECRET = import.meta.env.VITE_PINATA_API_SECRET;
+
+export const MORALIS_API_KEY = import.meta.env.VITE_MORALIS_API_KEY;
+
+export const SOLANA_NETWORK = "devnet";

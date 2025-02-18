@@ -9,7 +9,6 @@ interface AlertProps {
 }
 
 const Alert: FC<AlertProps> = ({ text, description, variant, visible = false }) => {
-  // if ((!text || text == "") && visible == false) return null;
   if (visible == false) return null;
 
   const variantStyles = {

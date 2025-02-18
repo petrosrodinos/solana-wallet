@@ -24,7 +24,10 @@ import {
   TokenMetadata,
 } from "@solana/spl-token-metadata";
 import * as bip39 from "bip39";
-import { SOLANA_RPC_PROVIDER, TOKEN_DECIMALS } from "../constants";
+import { MORALIS_API_KEY, SOLANA_NETWORK, SOLANA_RPC_PROVIDER, TOKEN_DECIMALS } from "../constants";
+import { Token } from "../interfaces/token";
+import { initMoralis } from "../utils/moralis";
+import Moralis from "moralis";
 
 export const createAndMintToken = async (
   mnemonic: string,
@@ -121,16 +124,12 @@ export const createAndMintToken = async (
       updateFieldInstruction
     );
 
-    console.log("Creating new token mint with metadata...");
     const mintTxSignature = await sendAndConfirmTransaction(connection, transaction, [
       payer,
       mintKeypair,
     ]);
-    console.log(`Mint created: ${mint.toBase58()}`);
-    console.log(`Transaction signature: ${mintTxSignature}`);
 
     // Create token account and mint tokens
-    console.log("Creating associated token account...");
     const tokenAccount = await getOrCreateAssociatedTokenAccount(
       connection,
       payer,
@@ -142,7 +141,6 @@ export const createAndMintToken = async (
       TOKEN_2022_PROGRAM_ID
     );
 
-    console.log("Minting tokens...");
     const mintAmount = Number(quantity) * 10 ** decimals;
     await mintTo(
       connection,
@@ -156,9 +154,11 @@ export const createAndMintToken = async (
       TOKEN_2022_PROGRAM_ID
     );
     const chainMetadata = await getTokenMetadata(connection, mint);
+
     console.log(`Successfully minted ${quantity} tokens with metadata!`);
     console.log(`Mint Address: ${mint.toBase58()}`);
     console.log(`Token Account: ${tokenAccount.address.toBase58()}`);
+    console.log(`Transaction signature: ${mintTxSignature}`);
     console.log("Chain Metadata:", chainMetadata);
 
     return {
@@ -172,12 +172,63 @@ export const createAndMintToken = async (
   }
 };
 
-export const uploadFileToIpfs = async (file: File) => {
+export const getUserTokens = async (publicKey: string): Promise<Token[]> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return `https://example.com/uploads/${file.name}`;
+    await initMoralis();
+
+    const portfolioResponse: any = await Moralis.SolApi.account.getPortfolio({
+      network: SOLANA_NETWORK,
+      address: publicKey,
+    });
+
+    const tokens = portfolioResponse.jsonResponse.tokens || [];
+
+    const userTokens: Token[] = await Promise.all(
+      tokens.map(async (token: any) => {
+        const metadata: any = await getMetadata(token.mint);
+
+        return {
+          name: metadata?.name || token.name || "",
+          symbol: metadata?.symbol || token.symbol || "",
+          metadata: metadata || {},
+          mint: token.mint,
+          balance: token.amount,
+          decimals: token.decimals.toString(),
+          description: metadata?.description || "",
+          image: metadata?.image || "",
+          totalSupply: metadata?.totalSupply || "",
+          associatedTokenAddress: token.associatedTokenAddress,
+        };
+      })
+    );
+
+    console.log("User tokens:", userTokens);
+
+    return userTokens;
   } catch (error) {
-    console.error("Error uploading image:", error);
-    throw new Error("Failed to upload image");
+    console.error("Error fetching user tokens:", error);
+    return [];
+  }
+};
+
+const getMetadata = async (mintAddress: string) => {
+  try {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "X-API-Key": MORALIS_API_KEY,
+      },
+    };
+
+    let metadata = await fetch(
+      `https://solana-gateway.moralis.io/token/${SOLANA_NETWORK}/${mintAddress}/metadata`,
+      options
+    );
+    metadata = await metadata.json();
+
+    return metadata;
+  } catch (error) {
+    throw new Error("Error fetching token metadata");
   }
 };

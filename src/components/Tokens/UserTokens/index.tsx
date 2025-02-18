@@ -1,31 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import UserTokenCard from "./UserTokenCard";
-
-const tokens = [
-  {
-    name: "Solana",
-    symbol: "SOL",
-    image: "https://cryptologos.cc/logos/solana-sol-logo.png",
-  },
-  {
-    name: "USDC",
-    symbol: "USDC",
-    image: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
-  },
-  {
-    name: "Raydium",
-    symbol: "RAY",
-    image: "https://cryptologos.cc/logos/raydium-ray-logo.png",
-  },
-  {
-    name: "Serum",
-    symbol: "SRM",
-    image: "https://cryptologos.cc/logos/serum-srm-logo.png",
-  },
-];
+import { useToken } from "../../../hooks/useToken";
+import Spinner from "../../ui/Spinner";
+import { Token } from "../../../interfaces/token";
+import Alert from "../../ui/Alert";
 
 const UserTokens: React.FC = () => {
+  const { getTokens, loading } = useToken();
+  const [tokens, setTokens] = useState<Token[]>([]);
+
+  useEffect(() => {
+    const getUserToken = async () => {
+      const tokens: any = await getTokens();
+      setTokens(tokens);
+    };
+    getUserToken();
+  }, []);
+
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-4">
@@ -37,11 +29,19 @@ const UserTokens: React.FC = () => {
           Create a Token
         </Link>
       </div>
-      <div className="bg-white/10 rounded-xl shadow-lg backdrop-blur-md p-4 space-y-4">
-        {tokens.map((token, index) => (
-          <UserTokenCard key={index} token={token} />
-        ))}
-      </div>
+      <Spinner visible={loading} />
+      {!loading && (
+        <div className="bg-white/10 rounded-xl shadow-lg backdrop-blur-md p-4 space-y-4">
+          {tokens.map((token, index) => (
+            <UserTokenCard key={index} token={token} />
+          ))}
+        </div>
+      )}
+      <Alert
+        visible={tokens.length == 0 && !loading}
+        text="No tokens found,buy some from the list below"
+        variant="warning"
+      />
     </div>
   );
 };

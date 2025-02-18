@@ -11,3 +11,16 @@ export interface IpfsFile {
   pinataUrl: string;
   gatewayUrl: string;
 }
+
+export interface Token {
+  name: string;
+  symbol: string;
+  metadata: any;
+  mint: string;
+  balance: string;
+  decimals: string;
+  description: string;
+  image: string;
+  totalSupply: string;
+  associatedTokenAddress: string;
+}
