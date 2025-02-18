@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
-import AppBar from "../AppBar";
-import BottomNavigation from "../BottomNavigation";
+import BottomNavigation from "../Navigation/BottomNavigation";
+import AppBar from "../Navigation/AppBar";
 
 const MainLayout = () => {
   return (

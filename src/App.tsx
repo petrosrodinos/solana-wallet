@@ -9,6 +9,7 @@ import Home from "./pages/home";
 import Wallet from "./pages/wallet/wallet";
 import Settings from "./pages/settings";
 import Container from "./components/Layouts/Container";
+import CreateToken from "./pages/tokens/create";
 
 function App() {
   const { encryptedMnemonic } = useWalletStore((state) => state);
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={!encryptedMnemonic ? <Navigate to="/wallet" /> : <Home />} />
             <Route path="tokens" element={<Tokens />} />
+            <Route path="tokens/create" element={<CreateToken />} />
             <Route path="nfts" element={<Nfts />} />
             <Route path="settings" element={<Settings />} />
           </Route>

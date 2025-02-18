@@ -24,7 +24,7 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <nav className="max-w-2xl bg-gray-800 p-4 flex justify-around fixed bottom-0 left-0 right-0 mx-auto w-full">
+    <nav className="max-w-2xl mt-1 bg-gray-800 p-2 flex justify-around fixed bottom-0 left-0 right-0 mx-auto">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const isActive = activeTab === tab.path;

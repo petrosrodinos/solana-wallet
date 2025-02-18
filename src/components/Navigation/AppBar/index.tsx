@@ -1,7 +1,7 @@
 import { LogOut } from "lucide-react";
-import { useWalletStore } from "../../store/wallet";
-import { usePinStore } from "../../store/pin";
 import { useNavigate } from "react-router";
+import { usePinStore } from "../../../store/pin";
+import { useWalletStore } from "../../../store/wallet";
 
 const AppBar = () => {
   const { resetWallet } = useWalletStore();
