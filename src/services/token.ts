@@ -165,6 +165,8 @@ export const createAndMintToken = async (
       mintAddress: mint.toBase58(),
       tokenAccount: tokenAccount.address.toBase58(),
       transactionSignature: mintTxSignature,
+      metadata: chainMetadata,
+      decimals: decimals,
     };
   } catch (error) {
     console.error("Error:", error);

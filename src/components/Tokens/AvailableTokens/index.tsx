@@ -1,42 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AvailableTokenCard from "./AvailableTokenCard";
-
-const tokensForSale = [
-  {
-    name: "Solana",
-    symbol: "SOL",
-    image: "https://cryptologos.cc/logos/solana-sol-logo.png",
-    totalSupply: 10000,
-    sold: 3500,
-    price: "0.1 SOL",
-  },
-  {
-    name: "USDC",
-    symbol: "USDC",
-    image: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
-    totalSupply: 50000,
-    sold: 12000,
-    price: "1 USDC",
-  },
-  {
-    name: "Raydium",
-    symbol: "RAY",
-    image: "https://cryptologos.cc/logos/raydium-ray-logo.png",
-    totalSupply: 20000,
-    sold: 7000,
-    price: "0.5 SOL",
-  },
-  {
-    name: "Serum",
-    symbol: "SRM",
-    image: "https://cryptologos.cc/logos/serum-srm-logo.png",
-    totalSupply: 15000,
-    sold: 9000,
-    price: "0.3 SOL",
-  },
-];
+import { useToken } from "../../../hooks/useToken";
+import { Token } from "../../../interfaces/token";
+import Spinner from "../../ui/Spinner";
+import Alert from "../../ui/Alert";
 
 const AvailableTokens: React.FC = () => {
+  const { getAllTokens, loading } = useToken();
+  const [tokens, setTokens] = useState<Token[]>([]);
+
+  useEffect(() => {
+    const getTokens = async () => {
+      const tokens: any = await getAllTokens();
+      setTokens(tokens);
+      console.log("TOKENS", tokens);
+    };
+    getTokens();
+  }, []);
+
   const handleBuyToken = (tokenName: string) => {
     console.log(`Buying ${tokenName}...`);
   };
@@ -44,11 +25,20 @@ const AvailableTokens: React.FC = () => {
   return (
     <div className="w-full mt-5">
       <h3 className="text-xl font-semibold text-white mb-4">Available Tokens</h3>
-      <div className="bg-white/10 rounded-xl shadow-lg backdrop-blur-md p-4 space-y-4">
-        {tokensForSale.map((token, index) => (
-          <AvailableTokenCard key={index} token={token} onBuy={handleBuyToken} />
-        ))}
-      </div>
+      {!loading && (
+        <div className="bg-white/10 rounded-xl shadow-lg backdrop-blur-md p-4 space-y-4">
+          {tokens.map((token, index) => (
+            <AvailableTokenCard key={index} token={token} onBuy={handleBuyToken} />
+          ))}
+        </div>
+      )}
+      <Spinner visible={loading} />
+
+      <Alert
+        visible={tokens.length == 0 && !loading}
+        text="No tokens found,buy some from the list below"
+        variant="warning"
+      />
     </div>
   );
 };

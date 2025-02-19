@@ -7,12 +7,12 @@ import { Token } from "../../../interfaces/token";
 import Alert from "../../ui/Alert";
 
 const UserTokens: React.FC = () => {
-  const { getTokens, loading } = useToken();
+  const { getUsersTokens, loading } = useToken();
   const [tokens, setTokens] = useState<Token[]>([]);
 
   useEffect(() => {
     const getUserToken = async () => {
-      const tokens: any = await getTokens();
+      const tokens: any = await getUsersTokens();
       setTokens(tokens);
     };
     getUserToken();

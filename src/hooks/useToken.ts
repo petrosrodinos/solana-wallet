@@ -5,6 +5,7 @@ import { useWalletStore } from "../store/wallet";
 import { uploadImageToPinata, uploadMetadataToPinata } from "../services/ipfs";
 import { createMetadataJson } from "../utils/token";
 import { decryptMnemonic } from "../utils/wallet";
+import { getTokens, insertToken } from "../services/supabase";
 
 export const useToken = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,13 +31,26 @@ export const useToken = () => {
 
       const metadataUploadResult = await uploadMetadataToPinata(metadata, formData.symbol);
 
-      await createAndMintToken(
+      const tokenResult = await createAndMintToken(
         mnemonic,
         formData.quantity,
         formData.name,
         formData.symbol,
         metadataUploadResult.gatewayUrl
       );
+
+      await insertToken({
+        name: formData.name,
+        symbol: formData.symbol,
+        mint: tokenResult.mintAddress,
+        tokenAccount: tokenResult.tokenAccount,
+        metadata: metadataUploadResult.gatewayUrl,
+        image: imageUploadResult.gatewayUrl,
+        totalSupply: formData.quantity,
+        decimals: tokenResult.decimals,
+        tokenUri: metadataUploadResult.gatewayUrl,
+      });
+
       toast.success("Token created successfully!");
     } catch (err) {
       console.error("Failed to create token.", err);
@@ -46,7 +60,7 @@ export const useToken = () => {
     }
   };
 
-  const getTokens = async () => {
+  const getUsersTokens = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -61,5 +75,19 @@ export const useToken = () => {
     }
   };
 
-  return { createToken, getTokens, loading, error };
+  const getAllTokens = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const tokens = await getTokens();
+      return tokens;
+    } catch (error) {
+      console.log("Error getting tokens from supabase", error);
+      throw new Error("Error getting tokens from supabase");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { createToken, getUsersTokens, getAllTokens, loading, error };
 };
