@@ -6,7 +6,5 @@ export const initMoralis = async () => {
     return await Moralis.start({
       apiKey: MORALIS_API_KEY,
     });
-  } catch (error) {
-    console.error("Failed to initialize Moralis", error);
-  }
+  } catch (error) {}
 };

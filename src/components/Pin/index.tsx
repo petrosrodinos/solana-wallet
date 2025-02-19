@@ -4,11 +4,12 @@ import usePin from "../../hooks/usePin";
 
 interface PinInputProps {
   confirm?: boolean;
+  visible?: boolean;
   onConfirm?: (pin: string) => void;
   onSetPin?: (pin: string) => void;
 }
 
-const PinInput: FC<PinInputProps> = ({ confirm = false, onConfirm, onSetPin }) => {
+const PinInput: FC<PinInputProps> = ({ confirm = false, visible = true, onConfirm, onSetPin }) => {
   const { checkPin, encryptPin, handlePinChange, pinError } = usePin(onConfirm);
   const [pin, setPin] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -43,6 +44,7 @@ const PinInput: FC<PinInputProps> = ({ confirm = false, onConfirm, onSetPin }) =
     }
   };
 
+  if (!visible) return null;
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 px-4">
       <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-xl w-full max-w-xs border border-white/20">
