@@ -1,8 +1,9 @@
 import React from "react";
+import { Token } from "../../../../interfaces/token";
 
 interface TokenProps {
-  token: any;
-  onBuy: (token: any) => void;
+  token: Token;
+  onBuy: (token: Token) => void;
 }
 
 const AvailableTokenCard: React.FC<TokenProps> = ({ token, onBuy }) => {
@@ -15,7 +16,7 @@ const AvailableTokenCard: React.FC<TokenProps> = ({ token, onBuy }) => {
           <h3 className="text-sm font-medium text-white">{name}</h3>
           <p className="text-xs text-gray-400">{symbol}</p>
           <p className="text-xs text-gray-400">
-            Sold: {sold} / {totalSupply}
+            Sold: {sold || 0} / {totalSupply}
           </p>
         </div>
       </div>

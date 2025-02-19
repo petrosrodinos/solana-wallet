@@ -13,12 +13,11 @@ const AvailableTokens: React.FC = () => {
     const getTokens = async () => {
       const tokens: any = await getAllTokens();
       setTokens(tokens);
-      console.log("TOKENS", tokens);
     };
     getTokens();
   }, []);
 
-  const handleBuyToken = (tokenName: string) => {
+  const handleBuyToken = (tokenName: Token) => {
     console.log(`Buying ${tokenName}...`);
   };
 

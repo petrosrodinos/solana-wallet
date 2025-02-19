@@ -19,8 +19,10 @@ export interface Token {
   mint: string;
   balance: string;
   decimals: string;
-  description: string;
+  description?: string;
   image: string;
   totalSupply: string;
-  associatedTokenAddress: string;
+  associatedTokenAddress?: string;
+  price?: string;
+  sold?: string;
 }
