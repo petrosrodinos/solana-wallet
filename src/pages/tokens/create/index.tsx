@@ -12,6 +12,8 @@ const CreateToken = () => {
     quantity: "",
     name: "",
     symbol: "",
+    description: "",
+    price: "",
   });
   const [uploadedImage, setUploadedImage] = useState(null);
   const { togglePinPrompt, visible } = usePin();
@@ -30,9 +32,11 @@ const CreateToken = () => {
       parseInt(formData.quantity) <= 0 ||
       !formData.symbol ||
       !formData.name ||
+      !formData.description ||
+      !formData.price ||
       !uploadedImage
     ) {
-      toast.error("Please fil out all fields.");
+      toast.error("Please fill out all fields.");
       return;
     }
     togglePinPrompt();
@@ -94,6 +98,28 @@ const CreateToken = () => {
                 onChange={handleInputChange}
                 className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
                 placeholder="e.g., 1000000"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Price in SOL:</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+                placeholder="e.g., 0.01"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Token Description:</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+                placeholder="Describe your token's purpose, use case, etc."
+                rows={3}
               />
             </div>
 

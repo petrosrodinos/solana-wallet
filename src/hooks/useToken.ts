@@ -14,7 +14,13 @@ export const useToken = () => {
 
   const createToken = async (
     pin: string,
-    formData: { quantity: string; name: string; symbol: string },
+    formData: {
+      quantity: string;
+      name: string;
+      symbol: string;
+      description: string;
+      price: string;
+    },
     uploadedImage: any
   ) => {
     setLoading(true);
@@ -46,6 +52,8 @@ export const useToken = () => {
         tokenAccount: tokenResult.tokenAccount,
         metadata: metadataUploadResult.gatewayUrl,
         image: imageUploadResult.gatewayUrl,
+        description: formData.description,
+        price: formData.price,
         totalSupply: formData.quantity,
         decimals: tokenResult.decimals,
         tokenUri: metadataUploadResult.gatewayUrl,
