@@ -30,7 +30,7 @@ const UserTokens: React.FC = () => {
         </Link>
       </div>
       <Spinner visible={loading} />
-      {!loading && (
+      {!loading && tokens.length > 0 && (
         <div className="bg-white/10 rounded-xl shadow-lg backdrop-blur-md p-4 space-y-4">
           {tokens.map((token, index) => (
             <UserTokenCard key={index} token={token} />
