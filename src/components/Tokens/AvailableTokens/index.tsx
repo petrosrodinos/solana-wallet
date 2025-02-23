@@ -13,7 +13,6 @@ const AvailableTokens: React.FC = () => {
     const getTokens = async () => {
       const tokens: any = await getAllTokens();
       setTokens(tokens);
-      console.log("TOK", JSON.stringify(tokens[0]));
     };
     getTokens();
   }, []);

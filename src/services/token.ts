@@ -35,6 +35,7 @@ export const createAndMintToken = async (
   tokenName: string,
   tokenSymbol: string,
   tokenUri: string
+  // price: string = "0"
 ) => {
   try {
     // Create keypair from mnemonic
