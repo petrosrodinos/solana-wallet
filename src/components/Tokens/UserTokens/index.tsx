@@ -39,7 +39,7 @@ const UserTokens: React.FC = () => {
       )}
       <Alert
         visible={tokens.length == 0 && !loading}
-        text="No tokens found,buy some from the list below"
+        text="No tokens found,buy some from the list below."
         variant="warning"
       />
     </div>
